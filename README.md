@@ -31,5 +31,11 @@ Secret Web is a command-line tool that empowers web developers, security profess
 3. Open a terminal and navigate to the downloaded directory.
 4. Run the following command to install the required dependencies:
 
-```bash
+```
 gem install net-http
+```
+
+```
+ruby secret-web
+```
+
