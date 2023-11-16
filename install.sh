@@ -60,3 +60,7 @@ if [[ $(command -v ruby) ]]; then
 else
 	echo -e "${white} [${red}+${white}] ${red}Manually install the Ruby program on your system"
 fi
+
+echo -e "${white}+-----------------------------------------------+"
+echo -e "${white}|      ${green}Base packages installed successfully     ${white}|"
+echo -e "${white}+-----------------------------------------------+"
