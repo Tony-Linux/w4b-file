@@ -38,23 +38,23 @@ w4b-file
 ### Examples:
 
 ```
-w4b-file https://example-url.com --check pdf       # Check all PDF files on the website.
+w4b-file https://example-url.co.vias --check pdf       # Check all PDF files on the website.
 ```
   
 ```
-w4b-file https://example-url.com --check image     # Check all image files on the website.
+w4b-file https://example-url.co.vias --check image     # Check all image files on the website.
 ```
   
 ```
-w4b-file https://example-url.com --check zip       # Check all ZIP files on the website.
+w4b-file https://example-url.co.vias --check zip       # Check all ZIP files on the website.
 ```
 
 ```
-w4b-file https://example-url.com --check document  # Check all document files on the website.
+w4b-file https://example-url.co.vias --check document  # Check all document files on the website.
 ```
 
 ```
-w4b-file https://example-url.com --check videos    # Check Video files on the website.
+w4b-file https://example-url.co.vias --check videos    # Check Video files on the website.
 ```
 
 ## Key Features
