@@ -1,0 +1,175 @@
+#!/bin/ruby
+
+############################################################################
+#                      © 2023 Tony-Linux. All Rights Reserved.             #
+#          For inquiries regarding this project, kindly reach out to:      #
+#                    Email: mrhunter5@proton.me                            #
+#                                                                          #
+#    This content is protected by copyright law and may not be replicated  #
+#     or altered without the explicit written consent of the copyright     #
+#                               holder.                                    #
+############################################################################
+
+require 'uri'
+require 'net/http'
+require 'openssl'
+
+def validate_and_sanitize_url(url)
+  uri = URI.parse(url)
+  return nil unless uri.scheme == 'http' || uri.scheme == 'https'
+
+  uri.to_s
+end
+
+def scan_website(url)
+  uri = URI.parse(url)
+  response = Net::HTTP.get_response(uri)
+
+  return [] unless response.is_a?(Net::HTTPSuccess)
+
+  response.body.scan(/href="([^"#]*)"|\ssrc="([^"#]*)"/).flatten.compact
+end
+
+def display_files(files, type, base_url)
+  return if files.empty?
+
+  puts "\e[37m [\e[32m+\e[37m]\e[32m #{type} files :"
+  files.each do |file|
+    display_url = URI.join(base_url, file).to_s
+    puts "\e[37m [\e[32m+\e[37m]\e[32m Link : #{display_url}"
+  end
+  puts
+end
+
+def scan_hidden_files(url)
+  uri = URI.parse(url)
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = (uri.scheme == 'https')
+  http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+
+  request = Net::HTTP::Get.new(uri)
+  request['User-Agent'] = 'Googlebot'
+  response = http.request(request)
+
+  hidden_files = []
+  if response.is_a?(Net::HTTPSuccess)
+    response.body.scan(/href="([^"#]*)"/).flatten.compact.each do |file|
+      hidden_files << file if file.start_with?(".") || file.include?("/.")
+    end
+  end
+
+  hidden_files
+end
+
+def check_files(type, url)
+  resources = scan_website(url)
+  files = resources.grep(/\.(#{type})$/i)
+  display_files(files, type.upcase, url) if !files.empty?
+  files
+end
+
+def check_all_files(url)
+  resources = scan_website(url)
+  display_files(resources, "All", url) if !resources.empty?
+  resources
+end
+
+def run_checks(check_type, website_url)
+  case check_type
+  when "videos"
+    files_found = check_files("mp4|avi", website_url)
+    if files_found.empty?
+      puts "\e[37m [\e[31m+\e[37m]\e[31m No video files found."
+    end
+  when "images"
+    files_found = check_files("jpg|jpeg|png", website_url)
+    if files_found.empty?
+      puts "\e[37m [\e[31m+\e[37m]\e[31m No image files found."
+    end
+  when "zip"
+    files_found = check_files("zip", website_url)
+    if files_found.empty?
+      puts "\e[37m [\e[31m+\e[37m]\e[31m No zip files found."
+    end
+  when "pdf"
+    files_found = check_files("pdf", website_url)
+    if files_found.empty?
+      puts "\e[37m [\e[31m+\e[37m]\e[31m No PDF files found."
+    end
+  when "document"
+    files_found = check_files("doc|docx|txt", website_url)
+    if files_found.empty?
+      puts "\e[37m [\e[31m+\e[37m]\e[31m No document files found."
+    end
+  when "--check hidden"
+    hidden_files = scan_hidden_files(website_url)
+    display_files(hidden_files, "Hidden", website_url) if !hidden_files.empty?
+  else
+    puts "\e[37m [\e[31m+\e[37m]\e[31m Invalid check type. Available options: videos, images, zip, pdf, document, --check hidden"
+  end
+end
+
+website_url = ARGV[0]
+check_type = ARGV[1]
+
+if website_url.nil?
+  puts "w4b-file :  is a powerful tool that scans sites for files. It finds file types and shows hidden files. Examples: PDFs, images, videos, or all site files.\nLINK : https://github.com/Tony-Linux/w4b-file\nUsage : w4b-file <website_url> [--check <file_type>|--check all|--check hidden]\n\nOptions:\n  <website_url>   The URL of the website to scan for files.\n  --check <file_type>   Specify the type of files to check (pdf, image, video, php, zip, doc, hidden).\n  w4b-file <website_url>      Check and display all files on the website.\n\nExamples:\n  w4b-file https://example-url.com                   # Check various types of files on the website.\n  w4b-file https://example-url.com --check pdf       # Check all PDF files on the website.\n  w4b-file https://example-url.com --check image     # Check all image files on the website.\n  w4b-file https://example-url.com --check hidden    # Check hidden files on the website.\n  w4b-file https://example-url.com --check all       # Check and display all files on the website.\n  w4b-file https://example-url.com --check zip       # Check all ZIP files on the website.\n  w4b-file https://example-url.com --check document  # Check all document files on the website.\n  w4b-file https://example-url.com --check videos    # Check Video files on the website."
+  exit 1
+end
+
+website_url = validate_and_sanitize_url(website_url)
+if website_url.nil?
+  puts "\e[37m [\e[31m+\e[37m]\e[31m Invalid URL format."
+  exit 1
+end
+
+if check_type == "--check"
+  file_type = ARGV[2]
+  run_checks(file_type, website_url) if file_type
+elsif check_type == "--check all"
+  check_all_files(website_url)
+elsif check_type == "--check hidden"
+  run_checks(check_type, website_url)
+else
+  pdf_files = scan_website(website_url).grep(/\.pdf$/i)
+  image_files = scan_website(website_url).grep(/\.(jpg|jpeg|png)$/i)
+  video_files = scan_website(website_url).grep(/\.(mp4|avi)$/i)
+  php_files = scan_website(website_url).grep(/\.php$/i)
+  zip_files = scan_website(website_url).grep(/\.zip$/i)
+  doc_files = scan_website(website_url).grep(/\.(doc|docx|txt)$/i)
+
+  case check_type
+  when "images"
+    if image_files.empty?
+      puts "\e[37m [\e[31m+\e[37m]\e[31m No image files found."
+    else
+      display_files(image_files, "Image", website_url)
+    end
+  when "pdf"
+        if pdf_files.empty?
+      puts "\e[37m [\e[31m+\e[37m]\e[31m No PDF files found."
+    else
+      display_files(pdf_files, "PDF", website_url)
+    end
+  when "videos"
+    if video_files.empty?
+      puts "\e[37m [\e[31m+\e[37m]\e[31m No video files found."
+    else
+      display_files(video_files, "Video", website_url)
+    end
+  else
+    display_files(image_files, "Image", website_url) if !image_files.empty?
+    display_files(pdf_files, "PDF", website_url) if !pdf_files.empty?
+    display_files(video_files, "Video", website_url) if !video_files.empty?
+    display_files(php_files, "PHP", website_url) if !php_files.empty?
+    display_files(zip_files, "ZIP", website_url) if !zip_files.empty?
+    display_files(doc_files, "Document", website_url) if !doc_files.empty?
+
+    hidden_files = scan_hidden_files(website_url)
+    if !hidden_files.empty?
+      display_files(hidden_files, "Hidden", website_url)
+    else
+      puts "\e[37m [\e[31m+\e[37m]\e[31m No hidden files available."
+    end
+  end
+end
