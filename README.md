@@ -66,4 +66,6 @@ w4b-file
 
 - **Dependency on Website Permissions**: The effectiveness of the tool is subject to the permissions granted by the website, impacting the extent of the scan.
 
-`WebFile Analyzer (w4b-file) is a tool designed for educational purposes, catering to web developers, security professionals, and researchers. It is essential to emphasize responsible use, and the developers are not liable for any misuse or issues that may arise. This tool is intended for educational exploration, promoting a better understanding of website file scanning without endorsing any unauthorized activities. Users are urged to exercise caution, adhere to ethical guidelines, and respect legal boundaries when utilizing this tool. The developers disclaim responsibility for any unintended consequences resulting from the tool's usage.`
+```
+WebFile Analyzer (w4b-file) is a tool designed for educational purposes, catering to web developers, security professionals, and researchers. It is essential to emphasize responsible use, and the developers are not liable for any misuse or issues that may arise. This tool is intended for educational exploration, promoting a better understanding of website file scanning without endorsing any unauthorized activities. Users are urged to exercise caution, adhere to ethical guidelines, and respect legal boundaries when utilizing this tool. The developers disclaim responsibility for any unintended consequences resulting from the tool's usage.
+```
