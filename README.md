@@ -1,6 +1,24 @@
-# Secret Web - File Scanning Tool
+# w4b-file - Website File Scanning Tool
 
-Secret Web is a command-line tool that empowers web developers, security professionals, and researchers to efficiently scan websites for a wide range of file types. This tool aids in the discovery of files, enhances security analysis, and streamlines content audits.
+w4b-file is a command-line tool that empowers web developers, security professionals, and researchers to efficiently scan websites for a wide range of file types. This tool aids in the discovery of files, enhances security analysis, and streamlines content audits.
+
+## INSTALLATION
+
+```
+git clone https://github.com/Tony-Linux/w4b-file
+```
+
+```
+cd w4b-file
+```
+
+```
+bash install.sh
+```
+
+```
+w4b-file
+```
 
 ## Features
 
