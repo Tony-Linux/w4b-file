@@ -10,6 +10,10 @@
 #                               holder.                                    #
 ############################################################################
 
+green='\033[1;32m'
+red='\033[1;31m'
+white='\033[1;37m'
+
 if [[ -d /usr/bin ]]; then
 	if [ $(id -u) -ne 0 ]; then
 		echo -e "${white} [${red}+${white}] ${red}This script necessitates root access to execute."
