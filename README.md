@@ -33,7 +33,7 @@ w4b-file
 
 `<website_url>   The URL of the website to scan for files.`
 
-`url <file_type>   Specify the type of files to check (pdf, image, video, php, zip, doc)`
+`<website_url> <file_type>   Specify the type of files to check (pdf, image, video, php, zip, doc)`
 
 ### Examples:
 
