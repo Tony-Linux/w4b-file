@@ -28,6 +28,35 @@ Execute WebFile Analyzer:
 w4b-file
 ```
 
+
+### Options:
+
+`<website_url>   The URL of the website to scan for files.`
+
+`url <file_type>   Specify the type of files to check (pdf, image, video, php, zip, doc)`
+
+### Examples:
+
+```
+w4b-file https://example-url.com --check pdf       # Check all PDF files on the website.
+```
+  
+```
+w4b-file https://example-url.com --check image     # Check all image files on the website.
+```
+  
+```
+w4b-file https://example-url.com --check zip       # Check all ZIP files on the website.
+```
+
+```
+w4b-file https://example-url.com --check document  # Check all document files on the website.
+```
+
+```
+w4b-file https://example-url.com --check videos    # Check Video files on the website.
+```
+
 ## Key Features
 
 - **File Type Identification**: Swiftly pinpoint various file types, including images, videos, PDFs, documents, and more.
